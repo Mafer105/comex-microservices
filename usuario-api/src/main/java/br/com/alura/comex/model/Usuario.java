@@ -30,6 +30,9 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String nome;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -38,6 +41,8 @@ public class Usuario implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Perfil perfil;
+
+    private boolean ativo = true;
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -52,5 +57,25 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.ativo;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.ativo;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.ativo;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.ativo;
     }
 }
