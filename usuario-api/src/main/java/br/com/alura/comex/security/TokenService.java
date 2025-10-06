@@ -1,6 +1,5 @@
 package br.com.alura.comex.security;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -14,18 +13,11 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import br.com.alura.comex.model.Usuario;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 @Service
 public class TokenService {
     
     @Value("${api.security.token.secret}")
     private String secret;
-
-    private TokenService tokenService;
 
     public String gerarToken(Usuario usuario){
         try {
