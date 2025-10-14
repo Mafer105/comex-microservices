@@ -72,11 +72,11 @@ public class AutenticacaoController {
     @PostMapping("/token/validate")
     public ResponseEntity<TokenValidationResponse> validateToken(@RequestBody TokenValidationRequest request) {
         try {
-        tokenService.getSubject(request.token());
-        return ResponseEntity.ok(new TokenValidationResponse(true));
+        String subject = tokenService.getSubject(request.token());
+        return ResponseEntity.ok(new TokenValidationResponse(true,subject));
     } catch (Exception e) {
         System.err.println("!!! Erro na validação do token: " + e.getClass().getName() + " - " + e.getMessage());
-        return ResponseEntity.ok(new TokenValidationResponse(false));
+        return ResponseEntity.ok(new TokenValidationResponse(false,""));
     }
     }
     

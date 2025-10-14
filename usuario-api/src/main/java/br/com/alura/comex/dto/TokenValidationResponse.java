@@ -1,3 +1,3 @@
 package br.com.alura.comex.dto;
-public record TokenValidationResponse(Boolean valido) {
+public record TokenValidationResponse(Boolean valido,String subject) {
 } 

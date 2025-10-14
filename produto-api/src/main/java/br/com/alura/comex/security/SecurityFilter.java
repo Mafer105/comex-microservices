@@ -3,6 +3,8 @@ package br.com.alura.comex.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,9 +30,12 @@ public class SecurityFilter extends OncePerRequestFilter {
             return; 
         }
         TokenValidationResponse authResponse = authClient.validateToken(tokenJWT);
-        System.out.println("RESPOSTA DO CLIENTE"+authResponse);
         Boolean valido = authResponse.valido();
         if (valido) {
+            var subject = authResponse.subject(); 
+            var authentication = new UsernamePasswordAuthenticationToken(subject, null, null);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             filterChain.doFilter(request, response);
         } else {
             sendError(response, HttpServletResponse.SC_FORBIDDEN, "Token inválido ou expirado");
@@ -39,7 +44,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String recuperarToken(HttpServletRequest request) {
         var authorizationHeader = request.getHeader("Authorization");
-        System.out.println("TENTANDO RECUPERA O TOKEN"+authorizationHeader);
         if (authorizationHeader != null) {
             return authorizationHeader.replace("Bearer ", "");
         }
