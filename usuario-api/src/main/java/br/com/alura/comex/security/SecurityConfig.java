@@ -28,7 +28,7 @@ public class SecurityConfig {
         return http.csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(req -> {
-                req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                req.requestMatchers(HttpMethod.POST, "/login/**").permitAll();
                 req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
                 req.anyRequest().authenticated();
             })

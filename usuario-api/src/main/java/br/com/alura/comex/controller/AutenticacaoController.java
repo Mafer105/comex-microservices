@@ -15,6 +15,8 @@ import br.com.alura.comex.model.TipoMensagemEnum;
 import br.com.alura.comex.model.Usuario;
 import br.com.alura.comex.repository.UsuarioRepository;
 import br.com.alura.comex.security.TokenService;
+import br.com.alura.comex.dto.TokenValidationRequest;
+import br.com.alura.comex.dto.TokenValidationResponse; 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,4 +68,16 @@ public class AutenticacaoController {
         }
 
     }
+
+    @PostMapping("/token/validate")
+    public ResponseEntity<TokenValidationResponse> validateToken(@RequestBody TokenValidationRequest request) {
+        try {
+        tokenService.getSubject(request.token());
+        return ResponseEntity.ok(new TokenValidationResponse(true));
+    } catch (Exception e) {
+        System.err.println("!!! Erro na validação do token: " + e.getClass().getName() + " - " + e.getMessage());
+        return ResponseEntity.ok(new TokenValidationResponse(false));
+    }
+    }
+    
 }
